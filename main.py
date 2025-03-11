@@ -3,7 +3,10 @@ from constants import *
 from player import Player
 
 def main():
-    pygame.init
+    pygame.init()
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
     player = Player(x = SCREEN_WIDTH / 2, y = SCREEN_HEIGHT / 2)
     fps = pygame.time.Clock()
     dt = 0
@@ -12,9 +15,13 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+        \
+        updatable.update(dt)
+
         screen.fill((0,0,0))
-        player.draw(screen)
-        player.update(dt)
+        for thing in drawable:
+            thing.draw(screen)
+            
         pygame.display.flip()
         dt = fps.tick(60) / 1000
 
